@@ -1,6 +1,9 @@
 package task
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
 type Task struct {
 	ID          int        `json:"id" mapstructure:"id"`
@@ -39,4 +42,18 @@ func (t *Task) MarkInProgress() {
 func (t *Task) MarkDone() {
 	t.Status = Done
 	t.UpdatedAt = time.Now()
+}
+
+// ValidateTaskStatus checks if the provided status is valid
+func ValidateTaskStatus(status string) (TaskStatus, error) {
+	switch status {
+	case "todo":
+		return Todo, nil
+	case "in-progress":
+		return InProgress, nil
+	case "done":
+		return Done, nil
+	default:
+		return TaskStatus(-1), errors.New("invalid task status")
+	}
 }
