@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const taskFilePath = "../../json/tasks.json"
+const taskFilePath = "../../data/tasks.json"
 
 // LoadTasks loads tasks from the JSON file
 func LoadTasks() ([]Task, error) {
