@@ -1,9 +1,9 @@
 [
   {
     "id": 1,
-    "description": "Buy Soap",
-    "status": "todo",
-    "created_at": "2024-09-15T00:43:20.4977085+05:30",
-    "updated_at": "2024-09-15T00:43:20.4977085+05:30"
+    "description": "Buy groceries and cook dinner",
+    "status": "in-progress",
+    "createdAt": "2024-12-30T15:11:03.2787363+05:30",
+    "updatedAt": "2024-12-30T15:20:33.625349+05:30"
   }
 ]
