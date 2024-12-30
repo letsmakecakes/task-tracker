@@ -1,145 +1,148 @@
 # Task Tracker CLI
 
-Task Tracker CLI is a command-line interface (CLI) tool designed to help users manage their tasks efficiently. This tool allows you to add, update, delete, and list tasks, and also track the status of tasks (e.g., To Do, In Progress, Done). The tasks are stored in a JSON file on your local filesystem.
+A command-line task management application built in Go. This CLI tool helps you track and manage your tasks with features for adding, updating, marking progress, and listing tasks in different states.
 
 ## Features
 
-- Add new tasks
-- Update or delete tasks
-- Mark tasks as `in-progress` or `done`
-- List all tasks or filter by status (`done`, `in-progress`, `todo`)
-- Task persistence in a JSON file
+- ✅ Add, update, and delete tasks
+- 📊 Track task status (todo, in-progress, done)
+- 📝 List all tasks or filter by status
+- 💾 Persistent storage using JSON
+- 🔒 Thread-safe file operations
+- ⚡ No external dependencies
 
-## Getting Started
+## Installation
 
 ### Prerequisites
+- Go 1.19 or higher
 
-- [Go](https://golang.org/doc/install) (version 1.16 or above)
+### Building from Source
 
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/task-tracker-cli.git
-   cd task-tracker-cli
-   ```
-
-2. Build the project:
-
-   ```bash
-   go build -o tasktracker ./cmd/tasktracker
-   ```
-
-3. Run the executable:
-
-   ```bash
-   ./tasktracker
-   ```
-
-### Usage
-
-The Task Tracker CLI provides several commands to manage tasks. Below are examples of how to use each command.
-
-#### Add a New Task
-
+1. Clone the repository
 ```bash
-./tasktracker add "Buy groceries"
+git clone https://github.com/yourusername/task-tracker.git
+cd task-tracker
+```
+
+2. Build the application
+```bash
+go build -o task-cli cmd/task-cli/main.go
+```
+
+3. (Optional) Add to PATH
+```bash
+mv task-cli /usr/local/bin/
+```
+
+## Usage
+
+### Adding Tasks
+```bash
+task-cli add "Buy groceries"
 # Output: Task added successfully (ID: 1)
 ```
 
-#### Update an Existing Task
-
+### Updating Tasks
 ```bash
-./tasktracker update 1 "Buy groceries and cook dinner"
-# Output: Task updated successfully
+task-cli update 1 "Buy groceries and cook dinner"
+# Output: Task 1 updated successfully
 ```
 
-#### Delete a Task
-
+### Deleting Tasks
 ```bash
-./tasktracker delete 1
-# Output: Task deleted successfully
+task-cli delete 1
+# Output: Task 1 deleted successfully
 ```
 
-#### Mark a Task as In Progress
-
+### Managing Task Status
 ```bash
-./tasktracker mark-in-progress 1
-# Output: Task marked as in progress
+task-cli mark-in-progress 1
+# Output: Task 1 marked as in-progress
+
+task-cli mark-done 1
+# Output: Task 1 marked as done
 ```
 
-#### Mark a Task as Done
-
+### Listing Tasks
 ```bash
-./tasktracker mark-done 1
-# Output: Task marked as done
+# List all tasks
+task-cli list
+
+# List by status
+task-cli list todo
+task-cli list in-progress
+task-cli list done
 ```
 
-#### List All Tasks
-
-```bash
-./tasktracker list
-# Output: List of all tasks
-```
-
-#### List Tasks by Status
-
-```bash
-./tasktracker list todo
-# Output: List of tasks with status "todo"
-```
-
-```bash
-./tasktracker list done
-# Output: List of tasks with status "done"
-```
-
-```bash
-./tasktracker list in-progress
-# Output: List of tasks with status "in-progress"
-```
-
-### Project Structure
-
-The project follows a typical Go project structure with the following key directories and files:
+## Project Structure
 
 ```
-task-tracker-cli/
-│
+task-tracker/
 ├── cmd/
-│   └── tasktracker/
-│       └── main.go          # Entry point for the CLI application
-│
+│   └── task-cli/
+│       └── main.go              # Entry point
 ├── internal/
-│   └── tasks/
-│       ├── task.go          # Task struct and logic for managing tasks
-│       ├── storage.go       # Functions for interacting with the JSON file
-│
-├── pkg/
-│   └── cli/
-│       ├── cli.go           # CLI commands and argument parsing
-│
-├── json/
-│   └── tasks.json           # File to store tasks (created automatically)
-│
-├── go.mod                   # Go module file
-└── README.md                # Project documentation
+│   ├── cli/
+│   │   ├── commands.go          # Command handlers
+│   │   └── parser.go            # CLI argument parser
+│   ├── models/
+│   │   └── task.go             # Task struct and methods
+│   ├── storage/
+│   │   ├── json_storage.go     # JSON file storage
+│   │   └── storage.go          # Storage interface
+│   └── utils/
+│       ├── errors.go           # Custom errors
+│       └── time.go             # Time utilities
+├── go.mod
+└── README.md
 ```
 
-### Task Properties
+## Task Properties
 
-Each task contains the following properties:
+Each task contains the following information:
+- `id`: Unique identifier
+- `description`: Task description
+- `status`: Current status (todo/in-progress/done)
+- `createdAt`: Creation timestamp
+- `updatedAt`: Last update timestamp
 
-- `id`: Unique identifier for the task
-- `description`: Description of the task
-- `status`: The status of the task (`todo`, `in-progress`, `done`)
-- `createdAt`: The creation date and time of the task
-- `updatedAt`: The last update date and time of the task
+## Design Decisions
 
-### Error Handling
+1. **File Storage**: Uses JSON for persistence due to its simplicity and human-readability
+2. **Thread Safety**: Implements mutex locks for concurrent file operations
+3. **Interface-Based Design**: Storage interface allows for easy testing and alternate implementations
+4. **No External Dependencies**: Uses only Go standard library for maintainability
 
-The CLI gracefully handles errors such as:
+## Error Handling
+
+The application handles various error cases:
+- Invalid commands or arguments
 - Invalid task IDs
-- Missing commands or arguments
-- Invalid status transitions (e.g., marking a non-existent task as done)
+- File operation errors
+- Concurrent access issues
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Future Improvements
+
+- [ ] Add task priorities
+- [ ] Add due dates
+- [ ] Add task categories/tags
+- [ ] Add search functionality
+- [ ] Add task notes/comments
+- [ ] Add data export/import
+- [ ] Add task completion statistics
+
+## Support
+
+If you have any questions or suggestions, please open an issue in the repository.
