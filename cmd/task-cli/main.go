@@ -4,27 +4,20 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 	"tasktracker/internal/cli"
 	"tasktracker/internal/storage"
 )
 
 func main() {
-	// Get the directory of the executable
-	execDir, err := os.Executable()
-	if err != nil {
-		_, err2 := fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		if err2 != nil {
-			log.Fatalf("error printing message to console: %v", err2)
-		}
-		os.Exit(1)
+	// Get the file path from the environment variable.
+	filePath := os.Getenv("TASKS_FILE_PATH")
+	if filePath == "" {
+		// Default to a specific path if the environment variable is not set.
+		filePath = "./data/tasks.json"
 	}
 
-	// Build the path to the JSON file in the data directory
-	dataFilePath := filepath.Join(filepath.Dir(execDir), "data", "tasks.json")
-
 	// Initialize storage with the JSON file path
-	store := storage.NewJSONStorage(dataFilePath)
+	store := storage.NewJSONStorage(filePath)
 
 	// Create a new command parser with the storage.
 	parser := cli.NewParser(store)
