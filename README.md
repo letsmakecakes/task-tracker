@@ -20,7 +20,7 @@ A command-line task management application built in Go. This CLI tool helps you 
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/task-tracker.git
+git clone https://github.com/letsmakecakes/task-tracker.git
 cd task-tracker
 ```
 
@@ -29,7 +29,12 @@ cd task-tracker
 go build -o task-cli cmd/task-cli/main.go
 ```
 
-3. (Optional) Add to PATH
+3. Set the data file path
+```bash
+export TASKS_FILE_PATH=/path/to/custom/tasks.json
+```
+
+4. (Optional) Add to PATH
 ```bash
 mv task-cli /usr/local/bin/
 ```
